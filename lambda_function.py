@@ -8,23 +8,31 @@ logger = Logger(service="api-clientes")
 cliente_service = ClienteService(logger)
 
 handlers = {
-    ("POST", "/inserir_dados_cliente"): cliente_service.inserir_dados_cliente,
     ("POST", "/deletar_dados_cliente"): cliente_service.deletar_dados_cliente,
+    ("POST", "/inserir_dados_cliente"): cliente_service.inserir_dados_cliente
 }
 
 @event_source(data_class=APIGatewayProxyEvent)
 def lambda_handler(event: APIGatewayProxyEvent, context) -> dict:
-    request = (event.http_method, event.path)
-    if request in handlers:
-        logger.info(f"Event: {event.body}")
-        method = handlers[request]
-        response = method(json.loads(event.body))
-        return response
-    
-    return {
-        "status_code": 404,
-        "body": "Método/Rota não suportado"
-    }
+    try:
+        request = (event.http_method, event.path)
+        if request in handlers:
+            logger.info(f"Event: {event.body}")
+            method = handlers[request]
+            response = method(json.loads(event.body))
+            return response
+        else:
+            return {
+                "status_code": 404,
+                "body": "Método/Rota não suportado"
+            }
+    except Exception as e:
+        logger.error(f"An error occurred: {str(e)}")
+        return {
+            "status_code": 500,
+            "body": f"An error occurred: {str(e)}"
+        }
+
 
 # event = {
 #     "httpMethod": "POST",
