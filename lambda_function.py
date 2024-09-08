@@ -6,7 +6,7 @@ from src.services.cliente_service import ClienteService
 
 logger = Logger(service="api-clientes")
 cliente_service = ClienteService(logger)
-
+ 
 handlers = {
     ("POST", "/deletar_dados_cliente"): cliente_service.deletar_dados_cliente,
     ("POST", "/inserir_dados_cliente"): cliente_service.inserir_dados_cliente
