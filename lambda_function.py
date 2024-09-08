@@ -34,7 +34,7 @@ def lambda_handler(event: APIGatewayProxyEvent, context) -> dict:
             "body": f"An error occurred: {str(e)}"
         }
 
-
+ 
 # event = {
 #     "httpMethod": "POST",
 #     "path": "/deletar_dados_cliente",
